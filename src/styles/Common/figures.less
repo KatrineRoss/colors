@@ -1,0 +1,31 @@
+.circle {
+    width: 30vw;
+    height: 30vw;
+    border-radius: 15vw;
+    background: rgb(97, 153, 116);
+}
+
+.star {
+    cursor: pointer;
+    height: 25px;
+    width: 25px;
+    margin: 2px;
+    float: left;
+    background-color: rgb(206, 206, 206);
+    clip-path: polygon(
+        50% 0%,
+        63% 38%,
+        100% 38%,
+        69% 59%,
+        82% 100%,
+        50% 75%,
+        18% 100%,
+        31% 59%,
+        0% 38%,
+        37% 38%
+    );
+}
+
+.star.selected {
+    background-color: rgb(159, 129, 206);
+}
