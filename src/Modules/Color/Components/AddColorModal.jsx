@@ -53,7 +53,7 @@ export class AddColorModal extends  React.Component {
                     />
 
                     <button
-                        className="btn"
+                        className="btn in-col mt-1"
                         onClick={this.handleAddColor}
                     >
                         Add

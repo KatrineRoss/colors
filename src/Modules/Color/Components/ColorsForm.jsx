@@ -3,8 +3,8 @@ import {ColorInfoView} from './ColorInfoView';
 import {PropTypes} from 'prop-types';
 import {AddColorButton} from './AddColorButton';
 import {isEmpty} from '../../../Common/Utils/CommonUtils';
-import {ColorReducers} from '../ColorReducers';
-import {ColorActions} from '../ColorActions';
+import {ColorReducers, ColorListReducers} from '../ColorReducers';
+import {ColorActions, ColorListActions} from '../ColorActions';
 
 /**
  * Отрисовывает форму, содержащую список цветов.
@@ -28,24 +28,16 @@ export class ColorsForm extends React.Component {
     }
 
     handleAddColor = (name, code) => {
-        const {colors, untitledCount} = this.state;
-
-        console.log(ColorReducers({}, ColorActions.addColor({
-            id: [...code].splice(1, code.length - 1),
-            name,
-            code,
-            rating: 1
-        })));
+        const colors = [...this.state.colors];
+        const {untitledCount} = this.state;
 
         this.setState({
-            colors: [...colors.concat(
-                [{
-                    name: !!name ? name : `untitled_${untitledCount}`,
-                    code,
-                    rating: 1,
-                    id: [...code].splice(1, code.length - 1)
-                }]
-            )],
+            colors: ColorListReducers(colors, ColorListActions.addColor({
+                id: [...code].splice(1, code.length - 1),
+                name: !!name ? name : `untitled_${untitledCount}`,
+                code,
+                rating: 1
+            })),
             untitledCount: !!name ? untitledCount : untitledCount + 1
         });
     }
@@ -53,12 +45,23 @@ export class ColorsForm extends React.Component {
     handleRateColor = (id, rating) => {
         const colors = [...this.state.colors];
         const editableIndex = colors.indexOf(colors.find((color) => color.id === id));
+        let newColor;
 
         if (editableIndex > -1) {
-            colors[editableIndex].rating = rating;
+            newColor = ColorReducers(colors[editableIndex], ColorActions.rateColor(rating));
+
+            colors[editableIndex] = newColor;
         }
 
-        this.setState(colors);
+        this.setState({colors});
+    }
+
+    handleRemoveColor = (id) => {
+        const colors = [...this.state.colors];
+
+        this.setState({
+            colors: ColorListReducers(colors, ColorListActions.removeColor(id))
+        });
     }
 
     render() {
@@ -78,6 +81,7 @@ export class ColorsForm extends React.Component {
                         rating={Number(color.rating)}
                         id={color.id}
                         onRate={this.handleRateColor}
+                        onRemove={this.handleRemoveColor}
                     />
                 ))}
             </React.Fragment>
