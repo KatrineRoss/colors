@@ -3,8 +3,8 @@ import {Color} from './Color';
 import {Rating} from '../../Rating/Components/Rating';
 
 export const ColorInfoView = ({code, name, rating, id, onRate, onRemove}) => {
-    const handleRate = () => {
-        onRate(id, rating);
+    const handleRate = (newRating) => {
+        onRate(id, newRating);
     }
 
     const handleRemove = () => {

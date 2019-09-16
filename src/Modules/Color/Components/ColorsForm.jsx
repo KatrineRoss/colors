@@ -5,6 +5,7 @@ import {AddColorButton} from './AddColorButton';
 import {isEmpty} from '../../../Common/Utils/CommonUtils';
 import {ColorReducers, ColorListReducers} from '../ColorReducers';
 import {ColorActions, ColorListActions} from '../ColorActions';
+import {store} from '../../../Common/Store/store';
 
 /**
  * Отрисовывает форму, содержащую список цветов.
@@ -27,16 +28,24 @@ export class ColorsForm extends React.Component {
         }
     }
 
+    componentDidMount() {
+        console.log(store.getState());
+        const colors = [...store.getState().colors];
+
+        this.setState({colors});
+    }
+
     handleAddColor = (name, code) => {
         const colors = [...this.state.colors];
         const {untitledCount} = this.state;
 
         this.setState({
             colors: ColorListReducers(colors, ColorListActions.addColor({
-                id: [...code].splice(1, code.length - 1),
+                id: [...code].splice(1, code.length - 1).join(''),
                 name: !!name ? name : `untitled_${untitledCount}`,
                 code,
-                rating: 1
+                rating: 1,
+                timestamp: new Date()
             })),
             untitledCount: !!name ? untitledCount : untitledCount + 1
         });
@@ -68,11 +77,11 @@ export class ColorsForm extends React.Component {
         const {colors} = this.state;
 
         return (
-            <React.Fragment>
+            <div className="app-wrapper">
                 <div className="main-header">
                     <AddColorButton onColorAdd={this.handleAddColor}/>
                 </div>
-
+                
                 {!isEmpty(colors) && colors.map((color, index) => (
                     <ColorInfoView
                         key={index}
@@ -84,7 +93,7 @@ export class ColorsForm extends React.Component {
                         onRemove={this.handleRemoveColor}
                     />
                 ))}
-            </React.Fragment>
+            </div>
         )
     }
 }

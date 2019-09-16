@@ -2,16 +2,14 @@ import {ColorActionTypes, ColorListActionTypes} from "./ColorActions";
 
 export const ColorReducers = (state = {}, action) => {
     switch(action.type) {
-        case ColorActionTypes.ADD_COLOR:
-            return {
-                ...action.color
-            }
         case ColorActionTypes.RATE_COLOR:
             const color = {...state};
 
             color.rating = action.rating;
 
             return color;
+        default:
+            return {...state};
     }
 }
 
@@ -25,16 +23,8 @@ export const ColorListReducers = (state = [], action) => {
                 action.color
             ];
         case ColorListActionTypes.REMOVE_COLOR:
-            let removeIndex;
-
-            newState.forEach((item, index) => {
-                if (item.id === action.id) {
-                    removeIndex = index;
-                }
-            });
-
-            return !!removeIndex ?
-                newState.slice(0, removeIndex).concat(newState.slice(removeIndex + 1)) :
-                newState;
+            return newState.filter((item) => item.id !== action.id);
+        default:
+            return newState;
     }
 }

@@ -1,5 +1,4 @@
 export const ColorActionTypes = {
-    ADD_COLOR: 'ADD_COLOR',
     RATE_COLOR: 'RATE_COLOR'
 }
 

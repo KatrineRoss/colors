@@ -1,6 +1,9 @@
-import {ESortTypes} from "../Sorting/Consts";
+import {createStore, combineReducers} from 'redux';
+import {ColorListReducers} from '../../Modules/Color/ColorReducers';
+import {SortingReducers} from '../Sorting/SortingReducers';
+import {ESortTypes} from '../Sorting/Consts';
 
-export const store = {
+const initialState = {
     colors: [
         {
             id: '0',
@@ -15,5 +18,12 @@ export const store = {
             rating: '4'
         }
     ],
-    sortType: ESortTypes.BY_DATE
+    sorting: ESortTypes.BY_DATE
 }
+
+const reducersMap = {
+    colors: ColorListReducers,
+    sorting: SortingReducers
+}
+
+export const store = createStore(combineReducers(reducersMap), initialState);
