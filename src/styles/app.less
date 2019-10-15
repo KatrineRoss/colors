@@ -1,10 +1,38 @@
-* {transition: all 0.5 ease-in-out}
+@base-background-light: rgb(255, 242, 234);
+@base-background-dark: rgb(43, 46, 56);
 
-body {margin: 0; padding: 0; width: 100vw; height: 100vh; overflow-x: hidden;}
+.full-page {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+* {transition: all 0.5s ease-in-out; box-sizing: border-box;}
+
+body {margin: 0; padding: 0; width: 100vw; height: 100vh;}
+
+.dark-theme {
+    background: @base-background-dark;
+    color: contrast(@base-background-dark);
+}
+
+.light-theme {
+    background: @base-background-light;
+    color: contrast(@base-background-light);
+}
+
+.app-wrapper {
+    height: 100%;
+}
 
 .app {
+    .full-page;
+
     @import "Common/figures.less";
     @import "Modules/colors.less";
     @import "Common/controls.less";
     @import "common.less";
+    @import "Modules/colorListSection.less";
+    @import "Modules/colorInfoSection.less";
 }

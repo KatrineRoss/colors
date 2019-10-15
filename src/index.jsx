@@ -8,7 +8,7 @@ import "./styles/app.less";
 class App extends React.Component {
     render() {
         return (
-            <div className="app">
+            <div className="app dark-theme">
                 <ColorsForm colors={colorsList} />
             </div>
         )

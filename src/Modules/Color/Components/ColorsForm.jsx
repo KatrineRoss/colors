@@ -1,11 +1,10 @@
 import * as React from 'react';
-import {ColorInfoView} from './ColorInfoView';
 import {PropTypes} from 'prop-types';
-import {AddColorButton} from './AddColorButton';
-import {isEmpty} from '../../../Common/Utils/CommonUtils';
-import {ColorReducers, ColorListReducers} from '../ColorReducers';
-import {ColorActions, ColorListActions} from '../ColorActions';
+import {ColorReducers} from '../ColorReducers';
+import {ColorActions, ColorListActions, SelectedColorActions} from '../ColorActions';
 import {store} from '../../../Common/Store/store';
+import {ColorList} from './ColorList';
+import {Color} from './Color';
 
 /**
  * Отрисовывает форму, содержащую список цветов.
@@ -24,7 +23,8 @@ export class ColorsForm extends React.Component {
 
         this.state = {
             colors: [...props.colors],
-            untitledCount: 0
+            untitledCount: 0,
+            selectedColor: null
         }
     }
 
@@ -33,20 +33,30 @@ export class ColorsForm extends React.Component {
         const colors = [...store.getState().colors];
 
         this.setState({colors});
+
+        store.subscribe(() => {
+            this.setState({colors: [...store.getState().colors]});
+
+            console.log('Colors count: ', store.getState().colors.length);
+        });
+    }
+
+    componentWillUpdate() {
+        store.subscribe(() => {
+            this.setState({selectedColor: {...store.getState().selectedColor}})
+        })
     }
 
     handleAddColor = (name, code) => {
-        const colors = [...this.state.colors];
         const {untitledCount} = this.state;
 
+        store.dispatch(ColorListActions.addColor(
+            code,
+            !!name ? name : `untitled_${untitledCount}`,
+            1
+        ));
+
         this.setState({
-            colors: ColorListReducers(colors, ColorListActions.addColor({
-                id: [...code].splice(1, code.length - 1).join(''),
-                name: !!name ? name : `untitled_${untitledCount}`,
-                code,
-                rating: 1,
-                timestamp: new Date()
-            })),
             untitledCount: !!name ? untitledCount : untitledCount + 1
         });
     }
@@ -68,31 +78,37 @@ export class ColorsForm extends React.Component {
     handleRemoveColor = (id) => {
         const colors = [...this.state.colors];
 
-        this.setState({
-            colors: ColorListReducers(colors, ColorListActions.removeColor(id))
-        });
+        store.dispatch(ColorListActions.removeColor(id));
+    }
+
+    hadleColorClick = (selectedColor) => {
+        store.dispatch(SelectedColorActions.selectColor(selectedColor));
     }
 
     render() {
-        const {colors} = this.state;
+        const {colors, selectedColor} = this.state;
 
         return (
             <div className="app-wrapper">
-                <div className="main-header">
-                    <AddColorButton onColorAdd={this.handleAddColor}/>
-                </div>
-                
-                {!isEmpty(colors) && colors.map((color, index) => (
-                    <ColorInfoView
-                        key={index}
-                        code={color.code}
-                        name={color.name}
-                        rating={Number(color.rating)}
-                        id={color.id}
-                        onRate={this.handleRateColor}
-                        onRemove={this.handleRemoveColor}
+                <div className="color-list-section">
+                    <ColorList
+                        colorList={colors}
+                        onColorClick={this.hadleColorClick}
                     />
-                ))}
+                </div>
+
+                <div className="color-constructor-section">
+
+                </div>
+
+                {!!selectedColor && (
+                    <div className="color-info-section">
+                        <Color
+                            color={selectedColor}
+                            className="color-view"
+                        />
+                    </div>
+                )}
             </div>
         )
     }
