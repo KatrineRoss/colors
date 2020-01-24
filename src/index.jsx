@@ -4,6 +4,7 @@ import {ColorsForm} from './Modules/Color/Components/ColorsForm';
 import {colorsList} from './Common/Data/Colors';
 
 import "./styles/app.less";
+import {format} from 'path';
 
 class App extends React.Component {
     render() {

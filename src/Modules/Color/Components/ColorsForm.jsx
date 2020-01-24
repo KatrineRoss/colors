@@ -6,6 +6,11 @@ import {store} from '../../../Common/Store/store';
 import {ColorList} from './ColorList';
 import {Color} from './Color';
 
+// interface Message {
+//     name: string;
+//     value?: number;
+// }
+
 /**
  * Отрисовывает форму, содержащую список цветов.
  */
@@ -43,10 +48,18 @@ export class ColorsForm extends React.Component {
 
     componentWillUpdate() {
         store.subscribe(() => {
-            this.setState({selectedColor: {...store.getState().selectedColor}})
+            let test1 = {name: 'test'};
+            console.log(test1);
+            this.setState({selectedColor: [...store.getState().selectedColor]})
         })
     }
 
+    /**
+     * Обработчик добавления цвета на форму.
+     * 
+     * @param {String} name Название цвета.
+     * @param {String} code Код цвета.
+     */
     handleAddColor = (name, code) => {
         const {untitledCount} = this.state;
 
@@ -61,6 +74,11 @@ export class ColorsForm extends React.Component {
         });
     }
 
+    /**
+     * Обработчик оценки цвета.
+     * 
+     * @param {Number} id Идентификатор
+     */
     handleRateColor = (id, rating) => {
         const colors = [...this.state.colors];
         const editableIndex = colors.indexOf(colors.find((color) => color.id === id));
@@ -103,10 +121,12 @@ export class ColorsForm extends React.Component {
 
                 {!!selectedColor && (
                     <div className="color-info-section">
-                        <Color
-                            color={selectedColor}
-                            className="color-view"
-                        />
+                        {selectedColor.map(color => 
+                            <Color
+                                color={color}
+                                className="color-view"
+                            />
+                        )}
                     </div>
                 )}
             </div>

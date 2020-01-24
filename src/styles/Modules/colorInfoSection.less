@@ -1,12 +1,19 @@
 .color-info-section {
     .section;
-
     width: auto;
-    float: left;
+    overflow: hidden;
+    background: contrast(@base-background-dark);
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: right;
 
     .color {
-        width: 16vw;
-        height: 16vw;
-        border-radius: 8vw;
+        width: 5vw;
+        height: 5vw;
+        border-radius: 2.5vw;
+    }
+
+    .slowOrange {
+        order: -1;
     }
 }

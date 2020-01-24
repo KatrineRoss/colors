@@ -16,19 +16,19 @@ export const colorsList = [
     },
     {
         id: '2',
-        name: 'slowGreen',
+        name: 'slowBlue',
         code: '#51b5e0',
         rating: '4'
     },
     {
         id: '3',
-        name: 'slowGreen',
+        name: 'slowYellow',
         code: '#edce77',
         rating: '4'
     },
     {
         id: '4',
-        name: 'slowGreen',
+        name: 'slowOrange',
         code: '#ff7b61',
         rating: '4'
     }

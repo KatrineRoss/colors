@@ -31,11 +31,11 @@ export const ColorListReducers = (state = [], action) => {
     }
 }
 
-export const SelectedColorReducers = (state = {}, action) => {
+export const SelectedColorReducers = (state = [], action) => {
     switch(action.type) {
         case SelectedColorActionTypes.SELECT_COLOR:
-            return {...action.color};
+            return [...state, action.color];
         default:
-            return {...state};
+            return [...state];
     }
 }

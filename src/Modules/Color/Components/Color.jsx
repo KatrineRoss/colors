@@ -15,9 +15,9 @@ export const Color = ({color, onClick, className}) => {
     return (
         <React.Fragment>
             <div
-                className={className ? `color ${className}` : 'color'}
+                className={className ? `color ${className} ${color.name}` : `color ${color.name}`}
                 style={{background: !!color && !!color.code ? color.code : '#b5f8ff'}}
-                onClick={handleClick}
+                onMouseOver={handleClick}
             ></div>
         </React.Fragment>
     )

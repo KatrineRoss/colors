@@ -22,11 +22,20 @@ module.exports = {
             {
                 test: /\.less$/,
                 use: ['style-loader', 'css-loader', 'less-loader']
+            },
+            {
+                test: /\.ts(x?)$/,
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: "ts-loader"
+                    }
+                ]
             }
         ]
     },
     resolve: {
-        extensions: ['.js', '.jsx', '.less']
+        extensions: ['.ts', '.js', '.jsx', '.less']
     },
     plugins: [htmlPlugin]
 }
